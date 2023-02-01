@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* .header {
+  max-width: 1152px;
+  padding-left: 12px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.bonsai {
+  width: 80px;
+  height: 80px;
+} */
