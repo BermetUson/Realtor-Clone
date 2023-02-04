@@ -1,11 +1,17 @@
 import React, { useState } from "react";
 
+import { getAuth } from "firebase/auth";
+
 const Profile = () => {
+  const auth = getAuth();
+
   const [formData, setFormData] = useState({
-    name: "bema",
-    email: "bema@gmail.com",
+    name: auth.currentUser.displayName,
+    email: auth.currentUser.email,
   });
+
   const { name, email } = formData;
+
   return (
     <>
       <section className="max-w-6xl mx-auto flex justify-center items-center flex-col ">
