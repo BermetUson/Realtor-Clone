@@ -1,14 +1,29 @@
-import React from "react";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 
 import Bonsai from "../assets/realtorLogo.png";
 
 const Header = () => {
+  const [pageSate, setPageSate] = useState("Sign in");
+
   const location = useLocation();
 
   const navigate = useNavigate();
 
-  const pathMathRoute = (route) => {
+  const auth = getAuth();
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setPageSate("Profile");
+      } else {
+        setPageSate("Sign in");
+      }
+    });
+  }, [auth]);
+
+  const pathMatchRoute = (route) => {
     if (route === location.pathname) {
       return true;
     }
@@ -29,7 +44,7 @@ const Header = () => {
             <li
               onClick={() => navigate("/")}
               className={`cursor-pointer py-3 text-sm font-semibold text-gray-400 border-b-[3px] border-b-transparent ${
-                pathMathRoute("/") && "text-black border-b-blue-900"
+                pathMatchRoute("/") && "text-black border-b-blue-900"
               }`}
             >
               Home
@@ -37,18 +52,19 @@ const Header = () => {
             <li
               onClick={() => navigate("/offers")}
               className={`cursor-pointer py-3 text-sm font-semibold text-gray-400 border-b-[3px] border-b-transparent ${
-                pathMathRoute("/offers") && "text-black border-b-blue-900"
+                pathMatchRoute("/offers") && "text-black border-b-blue-900"
               }`}
             >
               Offers
             </li>
             <li
-              onClick={() => navigate("/sign-in")}
+              onClick={() => navigate("/profile")}
               className={`cursor-pointer py-3 text-sm font-semibold text-gray-400 border-b-[3px] border-b-transparent ${
-                pathMathRoute("/sign-in") && "text-black border-b-blue-900"
+                (pathMatchRoute("/sign-in") || pathMatchRoute("/profile")) &&
+                "text-black border-b-blue-900"
               }`}
             >
-              Sign In
+              {pageSate}
             </li>
           </ul>
         </div>
