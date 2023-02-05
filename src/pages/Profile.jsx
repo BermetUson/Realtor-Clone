@@ -1,14 +1,21 @@
 import React, { useState } from "react";
 
 import { getAuth } from "firebase/auth";
+import { useNavigate } from "react-router";
 
 const Profile = () => {
   const auth = getAuth();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     name: auth.currentUser.displayName,
     email: auth.currentUser.email,
   });
+
+  const onLogout = () => {
+    auth.signOut();
+    navigate("/");
+  };
 
   const { name, email } = formData;
 
@@ -40,7 +47,10 @@ const Profile = () => {
                   Edit
                 </span>
               </p>
-              <p className="text-blue-600 hover:text-blue-800 transition ease-in-out duration-200 cursor-pointer">
+              <p
+                onClick={onLogout}
+                className="text-blue-600 hover:text-blue-800 transition ease-in-out duration-200 cursor-pointer"
+              >
                 Sign out
               </p>
             </div>
