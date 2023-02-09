@@ -72,7 +72,7 @@ const Profile = () => {
               disabled
               className="w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out mb-6"
             />
-            <div className="flex justify-between whitespace-nowrap text-sm sm:text-lg ">
+            <div className="flex mb-6 justify-between whitespace-nowrap text-sm sm:text-lg ">
               <p className="flex items-center">
                 Do you want to change your name?
                 <span
