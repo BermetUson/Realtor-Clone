@@ -21,7 +21,6 @@ const CreateListing = () => {
   const navigate = useNavigate();
 
   const auth = getAuth();
-  console.log(auth);
 
   const [loading, setLoading] = useState(false);
 
@@ -54,8 +53,6 @@ const CreateListing = () => {
     offer,
     regularPrice,
     discountedPrice,
-    latitude,
-    longitude,
     images,
   } = formData;
 
