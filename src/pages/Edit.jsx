@@ -17,6 +17,7 @@ import {
   doc,
   getDoc,
   serverTimestamp,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { useNavigate, useParams } from "react-router-dom";
@@ -68,14 +69,25 @@ const Edit = () => {
   useEffect(() => {
     setLoading(true);
     async function fetchListing() {
-      const docRef = doc(db, "listings");
+      const docRef = doc(db, "listings", params.listingId);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         setListing(docSnap.data());
-        setFormData({ ...docSnap.data(),});
+        setFormData({ ...docSnap.data() });
+        setLoading(false);
+      } else {
+        navigate("/");
+        toast.error("Listing does not exist");
       }
     }
     fetchListing();
+  }, [navigate, params.listingId]);
+
+  useEffect(() => {
+    if (listing && listing.userRef.userRef !== auth.currentUser.uid) {
+      toast.error("You can edit this listing");
+      navigate("/");
+    }
   }, []);
 
   const onChange = (e) => {
@@ -177,9 +189,11 @@ const Edit = () => {
     };
     delete formDataCopy.images;
     !formDataCopy.offer && delete formDataCopy.discountedPrice;
-    const docRef = await addDoc(collection(db, "listings"), formDataCopy);
+    const docRef = doc(db, "listings", params.listingId);
+
+    await updateDoc(docRef, formDataCopy);
     setLoading(false);
-    toast.success("Listing created");
+    toast.success("Listing Edited");
     navigate(`/category/${formDataCopy}/${docRef.id}`);
   }
   if (loading) {
@@ -187,7 +201,7 @@ const Edit = () => {
   }
   return (
     <main className="max-w-md px-2 mx-auto">
-      <h1 className="text-3xl text-center mt-6 font-bold">Create a Listing</h1>
+      <h1 className="text-3xl text-center mt-6 font-bold">EditListing</h1>
       <form onSubmit={onSubmit}>
         <p className="text-lg mt-6 font-semibold">Sell / Rent</p>
         <div className="flex">
@@ -468,7 +482,7 @@ const Edit = () => {
           className="mb-6 w-full px-7 py-3 bg-blue-600 text-white font-medium text-sm uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg 
           active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
         >
-          Create Listing
+          Edit Listing
         </button>
       </form>
     </main>
