@@ -67,6 +67,13 @@ const Edit = () => {
   const params = useParams();
 
   useEffect(() => {
+    if (listing && listing.userRef !== auth.currentUser.uid) {
+      toast.error("You can't edit this listing");
+      navigate("/");
+    }
+  }, [auth.currentUser.uid, listing, navigate]);
+
+  useEffect(() => {
     setLoading(true);
     async function fetchListing() {
       const docRef = doc(db, "listings", params.listingId);
@@ -82,13 +89,6 @@ const Edit = () => {
     }
     fetchListing();
   }, [navigate, params.listingId]);
-
-  useEffect(() => {
-    if (listing && listing.userRef.userRef !== auth.currentUser.uid) {
-      toast.error("You can edit this listing");
-      navigate("/");
-    }
-  }, []);
 
   const onChange = (e) => {
     let boolean = null;
