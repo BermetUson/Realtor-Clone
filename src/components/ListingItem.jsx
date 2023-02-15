@@ -5,6 +5,7 @@ import { MdLocationPin, MdEdit } from "react-icons/md";
 import { FaTrash } from "react-icons/fa";
 
 const ListingItem = ({ listing, id, onDelete, onEdit }) => {
+  console.log(id, "jkhgyfdtcr");
   return (
     <li className="relative bg-white flex flex-col justify-between items-center shadow-md hover:shadow-xl rounded-md overflow-hidden transition-shadow duration-150 m-[10px]">
       <Link className="contents" to={`/category/${listing.type}/${id}`}>
